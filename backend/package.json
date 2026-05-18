@@ -11,7 +11,8 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint 'src/**/*.ts' 'tests/**/*.ts'",
     "typecheck": "tsc --noEmit",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "seed:prod": "node dist/seed.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
