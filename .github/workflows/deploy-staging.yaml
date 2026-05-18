@@ -11,6 +11,7 @@ permissions:
   packages: write
   
 jobs:
+  # Ajouter versions
   push-backend-image:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and push Backend image
@@ -40,6 +41,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  # Ajouter versions
   push-frontend-image:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and push Frontend image
@@ -68,3 +70,21 @@ jobs:
           tags: ghcr.io/${{ github.actor }}/stockhub-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cloning the repository
+        uses: actions/checkout@v4
+
+      - name: Setup VPN
+        uses: ./.github/actions/vpn
+        with:
+          host: "${{ secrets.VPN_IP }}"
+          port: "443"
+          username: "${{ secrets.VPN_USERNAME }}"
+          password: "${{ secrets.VPN_PASSWORD }}"
+          ping_host: ${{ secrets.STAGING_HOST }}
