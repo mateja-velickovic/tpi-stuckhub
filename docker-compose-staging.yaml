@@ -1,8 +1,0 @@
-services:
-  api:
-    image: ghcr.io/mateja-velickovic/stockhub-backend:latest
-    build : null
-
-  web:
-    image: ghcr.io/mateja-velickovic/stockhub-frontend:latest
-    build : null
