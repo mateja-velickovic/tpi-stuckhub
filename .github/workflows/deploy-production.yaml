@@ -95,7 +95,7 @@ jobs:
           host: ${{ secrets.PRODUCTION_HOST }}
           username: ${{ secrets.SSH_PRODUCTION_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose*.yaml"
+          source: "docker-compose.yaml, docker-compose.prod.yaml"
           target: /home/${{ secrets.SSH_PRODUCTION_USERNAME }}/prod-stockhub
           port: ${{ secrets.SSH_PRODUCTION_PORT }}
 
@@ -114,9 +114,9 @@ jobs:
             cd ~/prod-stockhub/
 
             export IMAGE_VERSION=${{ github.event_name == 'workflow_dispatch' && inputs.image_version || github.sha }}
-            
-            docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml down
-            docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml pull
-            docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml up -d
+
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml pull
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d
 
   # Ajouter le nettoyage des images inutilisées sur la machine distante
