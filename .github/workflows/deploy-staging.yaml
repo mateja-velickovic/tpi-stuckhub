@@ -5,6 +5,11 @@ on:
     workflows: ["StockHub | CI Workflow"]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      image_version:
+        description: "Indiquer la version des images (par défaut : commit SHA)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -19,6 +24,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set image version
+        run: echo "IMAGE_VERSION=${{ github.event_name == 'workflow_dispatch' && inputs.image_version || github.sha }}" >> $GITHUB_ENV
+
       - name: Cloning the repository
         uses: actions/checkout@v4
 
@@ -38,7 +46,9 @@ jobs:
           context: ./backend
           push: true
           file: ./backend/Dockerfile
-          tags: ghcr.io/${{ github.actor }}/stockhub-backend:latest
+          tags: |
+            ghcr.io/${{ github.actor }}/stockhub-backend:${{ env.IMAGE_VERSION }}
+            ghcr.io/${{ github.actor }}/stockhub-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -50,6 +60,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set image version
+        run: echo "IMAGE_VERSION=${{ github.event_name == 'workflow_dispatch' && inputs.image_version || github.sha }}" >> $GITHUB_ENV
+        
       - name: Cloning the repository
         uses: actions/checkout@v4
 
@@ -69,7 +82,9 @@ jobs:
           context: ./frontend
           push: true
           file: ./frontend/Dockerfile
-          tags: ghcr.io/${{ github.actor }}/stockhub-frontend:latest
+          tags: |
+            ghcr.io/${{ github.actor }}/stockhub-frontend:${{ env.IMAGE_VERSION }}
+            ghcr.io/${{ github.actor }}/stockhub-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
