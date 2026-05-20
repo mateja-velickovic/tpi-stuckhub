@@ -103,9 +103,9 @@ jobs:
             # cd ~/prod-stockhub/
 
             # export IMAGE_VERSION=${{ github.event_name == 'workflow_dispatch' && inputs.image_version || github.sha }}
-            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml down
-            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml pull
-            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml up -d
+            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml down
+            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml pull
+            # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml -f docker-compose.prod.yaml up -d
 
       - name: Sending files to the production server
         uses: appleboy/scp-action@v0.1.7
@@ -113,7 +113,7 @@ jobs:
           host: ${{ secrets.PRODUCTION_HOST }}
           username: ${{ secrets.SSH_PRODUCTION_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./docker-compose.yaml,./docker-compose.staging.yaml"
+          source: "./docker-compose.yaml,./docker-compose.staging.yaml,./docker-compose.prod.yaml"
           target: ~/prod-stockhub/
           port: ${{ secrets.SSH_PRODUCTION_PORT }}
 
