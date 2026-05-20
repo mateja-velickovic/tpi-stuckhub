@@ -14,8 +14,6 @@ permissions:
   
 jobs:
   push-backend-image:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    
     name: Build and push Backend image
     runs-on: ubuntu-latest
 
@@ -49,8 +47,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   push-frontend-image:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-
     name: Build and push Frontend image
     runs-on: ubuntu-latest
 
@@ -84,7 +80,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy-staging:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     needs: [push-backend-image, push-frontend-image]
 
     name: Deploy to Production
@@ -113,12 +108,13 @@ jobs:
             # docker compose -f docker-compose.yaml -f docker-compose.staging.yaml up -d
 
       - name: Sending files to the production server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.PRODUCTION_HOST }}
           username: ${{ secrets.SSH_PRODUCTION_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yaml"
-          target: ~/prod-stockhub/
           port: ${{ secrets.SSH_PRODUCTION_PORT }}
+          source: "./docker-compose.yaml"
+          target: ~/prod-stockhub/
+
   # Ajouter le nettoyage des images inutilisées sur la machine distante
