@@ -1,18 +1,50 @@
-# ⚙ Stock Hub - Optimisation de l'application
+# 📦 Stock Hub - Optimisation de l'application
 
-## 🖼 Présentation
-Ce TPI consiste à optimiser la qualité, la sécurité ainsi que le déploiement d'une application existante nommée StockHub (voir image de l'application ci-dessous).
-Celle-ci permet de gérer du stock en créant de nouveaux produits, ainsi qu'en gérant leur stock en passant par des mouvements de stocks (entrée / sortie de produits).
+## 👨‍🏫 Présentation
+Ce TPI consiste à optimiser la qualité, la sécurité ainsi que le déploiement d'une application existante nommée StockHub, celle-ci est composée d'un backend développé en Node.js avec Express, d'un frontend en Vue.js ainsi que d'une base de données relationnelle MySQL. l'application est déjà fonctionnelle mais nécessite des améliorations notamment en termes de couvertures de tests et de processus de déploiement (voir image de l'application ci-dessous).
 
 <img width="1914" height="673" alt="Screenshot du tableau de bord de l'application" src="https://github.com/user-attachments/assets/31dc8158-661d-4e29-8710-a80220a25f1c" />
-Nous pouvons ainsi sur cette interface, gérer les entrées et sorties des différents produits ainsi que gérer leur catégories. 
+<br>
 
-## 💨 Lancement du projet
+L'application dispose des fonctionnalités suivantes :
+- **Suivi des niveaux de stock** (stock bas niveau / normal)
+- **La gestion des produits** (création / modification / suppression)
+- **La gestion des catégories** (création / modification / suppression)
+- **La gestion des mouvements** (entrées de produits / sorties de produits)
+
+## 💨 Lancement du projet en local
+### 📃 Pré-requis
+- Un environnement : Windows, macOS ou Linux
+- Docker (inclut Docker Compose v2)
+- Un fichier `.env` a la racine du projet qui respecte la structure du `.env.exemple`
+- Les ports 80, 3000 et 3306 libres (ou modifier les ports dans `docker-compose.yaml`)
+- *(Node.js 22+ et npm, pour developper hors Docker)*
 
 ## 🔑 Variables d'environnement
+Le fichier `.env` doit être basé sur le fichier `.env.example` à la racine du projet.
+
+**Backend**
+ - `PORT` - Port HTTP de l'API (ex: 3000)
+ - `DB_HOST` - Hôte MySQL (ex: localhost ou nom du container Docker)
+ - `DB_PORT` - Port MySQL (ex: 3306)
+ - `DB_NAME` - Nom de la base de données
+ - `DB_USER` - Nom d'utilisateur MySQL
+ - `DB_PASSWORD` - Mot de passe MySQL
+ - `JWT_SECRET` - Secret JWT (à changer en prod)
+ - `JWT_EXPIRES_IN` - Durée de la validité des tokens (ex: 24h)
+
+
+**Frontend**
+- `VITE_API_URL` - Base de l'API (ex: /api)
+- `VITE_DEV_PORT` - Port du dev server Vite (ex: 5173)
+- `VITE_API_PROXY_TARGET` - Cible du proxy Vite (ex: http://localhost:3000)
+
 
 ## ✅ Workflow CI
+### 🔒 Secrets
 
 ## 🚧 Workflow Staging
+### 🔒 Secrets
 
 ## 🏨 Workflow Production
+### 🔒 Secrets
